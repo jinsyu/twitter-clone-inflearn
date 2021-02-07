@@ -2,7 +2,7 @@
   <div class="flex h-screen">
     <!-- side section -->
     <div
-      class="w-1/4 pt-5 ml-10 flex flex-col justify-between border-r border-gray-200"
+      class="w-1/4 pt-5 ml-10 flex flex-col justify-between border-r border-gray-100"
     >
       <div class="flex flex-col items-center lg:items-start">
         <!-- twitter logo -->
@@ -91,72 +91,39 @@
       </div>
     </div>
     <div class="flex-1">
-      <div class="flex">
-        <div class="flex-1 flex flex-col border-r border-gray-100 h-screen">
-          <!-- title -->
-          <div class="px-4 py-2 border-b border-gray-100">
-            <span class="font-bold text-lg">홈</span>
-          </div>
-          <div class="overflow-y-auto">
-            <!-- tweet section -->
-            <div class="flex p-4 border-b-8 border-gray-100">
+      <div class="flex h-screen">
+        <!-- main section -->
+        <div class="flex-1 border-r border-gray-100">
+          <div class="flex flex-col">
+            <!-- page title -->
+            <div class="border-b border-gray-100 px-3 py-2 font-bold text-lg">
+              홈
+            </div>
+            <!-- tweeting section -->
+            <div class="flex px-3 py-3 border-b-8 border-gray-100">
               <img
-                src="http://picsum.photos/100"
-                class="w-10 h-10 rounded-full"
-                alt=""
+                src="http://picsum.photos/200"
+                class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer"
               />
-              <div class="flex-1">
+              <div class="ml-2 flex-1 flex flex-col">
                 <textarea
                   placeholder="무슨 일이 일어나고 있나요?"
-                  class="ml-3 text-lg font-bold focus:outline-none resize-none w-full"
+                  class="w-full text-lg font-bold focus:outline-none mb-3 resize-none"
                 ></textarea>
                 <div class="text-right">
                   <button
-                    class="bg-primary text-white px-4 py-2 rounded-full hover:bg-dark"
+                    class="bg-primary hover:bg-dark text-sm font-bold text-white px-4 py-1 rounded-full"
                   >
                     트윗
                   </button>
                 </div>
               </div>
             </div>
-            <!-- tweets -->
-            <div
-              class="flex flex-col p-4 border-b border-gray-100 hover:bg-gray-100"
-              v-for="i in 10"
-              :key="i"
-            >
-              <div class="flex">
-                <img
-                  src="http://picsum.photos/100"
-                  class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80"
-                />
-                <div class="flex-1 ml-2 flex flex-col space-y-1">
-                  <div>
-                    <span>민중의소리</span>
-                    <span>@newsvop</span>
-                    <span>· 11시간</span>
-                  </div>
-                  <div>
-                    "내가 윤서인을 10~20년 꾸준히 응징하는 것은 사회봉사활동에
-                    불과하다"
-                  </div>
-                  <div class="flex justify-between">
-                    <div>
-                      <i class="far fa-comment"></i>
-                      <span>11</span>
-                    </div>
-                    <i class="far fa-comment"></i>
-                    <i class="far fa-comment"></i>
-                    <i class="far fa-comment"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- tweeting section -->
           </div>
         </div>
-        <div>
-          <div class="w-60">trends</div>
-        </div>
+        <!-- trend section -->
+        <div class="w-2/5">trend</div>
       </div>
     </div>
   </div>
