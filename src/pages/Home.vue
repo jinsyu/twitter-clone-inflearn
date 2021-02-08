@@ -76,7 +76,10 @@
 </template>
 
 <script>
-export default {}
+import Trends from '../components/Trends.vue'
+export default {
+  components: { Trends },
+}
 </script>
 
 <style></style>
