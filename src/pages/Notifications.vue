@@ -1,4 +1,5 @@
 <template>
+  <!-- notification -->
   <div class="flex-1 border-r border-gray-100 flex flex-col overflow-y-auto">
     <!-- title -->
     <div class="p-3 font-bold text-lg border-b border-gray-100">알림</div>
@@ -26,10 +27,15 @@
       </div>
     </div>
   </div>
+  <!-- trends -->
+  <Trends />
 </template>
 
 <script>
-export default {}
+import Trends from '../components/Trends.vue'
+export default {
+  components: { Trends },
+}
 </script>
 
 <style></style>
