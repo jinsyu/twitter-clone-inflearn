@@ -7,38 +7,38 @@
         <i class="fab fa-twitter text-3xl text-primary xl:ml-4 mb-3"></i>
         <!-- sidemenu icons -->
         <div class="flex flex-col items-start space-y-1">
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          <router-link to="/" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="fas fa-home fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">홈</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="fas fa-hashtag fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">탐색하기</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/notifications" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="far fa-bell fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">알림</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/messages" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="far fa-envelope fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">쪽지</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="far fa-bookmark fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">북마크</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="far fa-list-alt fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">리스트</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/profile" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="far fa-user fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">프로필</span>
-          </div>
-          <div class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
+          </router-link>
+          <router-link to="/" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer">
             <i class="fas fa-ellipsis-h fa-fw text-2xl"></i>
             <span class="ml-5 text-xl hidden xl:inline-block">더보기</span>
-          </div>
+          </router-link>
         </div>
         <!-- tweet button -->
         <div class="w-full xl:pr-3 flex justify-center">
@@ -65,17 +65,11 @@
     </div>
     <!-- main section -->
     <div class="flex-1 flex h-screen">
-      <Profile />
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import Profile from './pages/Profile.vue'
-export default {
-  components: { Profile },
-  setup() {},
-}
+export default {}
 </script>
-
-<style></style>
