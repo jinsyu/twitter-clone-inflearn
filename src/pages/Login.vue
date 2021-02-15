@@ -13,15 +13,21 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { auth } from '../firebase'
+import { ref, onMounted } from 'vue'
+import { auth, USER_COLEECTION } from '../firebase'
 import { useRouter } from 'vue-router'
+import store from '../store'
+
 export default {
   setup() {
     const email = ref('')
     const password = ref('')
     const loading = ref(false)
     const router = useRouter()
+
+    onMounted(() => {
+      console.log(store.state.user)
+    })
 
     const onLogin = async () => {
       if (!email.value || !password.value) {
@@ -32,8 +38,13 @@ export default {
       try {
         loading.value = true
         const { user } = await auth.signInWithEmailAndPassword(email.value, password.value)
-        console.log(user.uid)
-        router.replace('/')
+
+        // get user info
+        const doc = await USER_COLEECTION.doc(user.uid).get()
+        store.commit('SET_USER', doc.data())
+        console.log(store.state.user)
+
+        // router.replace('/')
       } catch (e) {
         switch (e.code) {
           case 'auth/invalid-email':
