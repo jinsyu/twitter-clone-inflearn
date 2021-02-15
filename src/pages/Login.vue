@@ -25,10 +25,6 @@ export default {
     const loading = ref(false)
     const router = useRouter()
 
-    onMounted(() => {
-      console.log(store.state.user)
-    })
-
     const onLogin = async () => {
       if (!email.value || !password.value) {
         alert('이메일, 비밀번호를 모두 입력해주세요.')
@@ -42,9 +38,7 @@ export default {
         // get user info
         const doc = await USER_COLEECTION.doc(user.uid).get()
         store.commit('SET_USER', doc.data())
-        console.log(store.state.user)
-
-        // router.replace('/')
+        router.replace('/')
       } catch (e) {
         switch (e.code) {
           case 'auth/invalid-email':
