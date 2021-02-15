@@ -4,7 +4,7 @@
     <span class="text-2xl font-bold">뜨위떠 회원가입</span>
     <input v-model="username" type="text" class="rounded w-96 px-4 py-3 border border-gray-300 focus:ring-2 focus:border-primary focus:outline-none" placeholder="아이디" />
     <input v-model="email" type="text" class="rounded w-96 px-4 py-3 border border-gray-300 focus:ring-2 focus:border-primary focus:outline-none" placeholder="이메일" />
-    <input v-model="password" type="password" class="rounded w-96 px-4 py-3 border border-gray-300 focus:ring-2 focus:border-primary focus:outline-none" placeholder="비밀번호" />
+    <input @keyup.enter="onRegister" v-model="password" type="password" class="rounded w-96 px-4 py-3 border border-gray-300 focus:ring-2 focus:border-primary focus:outline-none" placeholder="비밀번호" />
     <button v-if="loading" class="w-96 rounded bg-light text-white py-3">회원가입 중입니다.</button>
     <button v-else class="w-96 rounded bg-primary text-white py-3 hover:bg-dark" @click="onRegister">회원가입</button>
     <router-link to="/login">
