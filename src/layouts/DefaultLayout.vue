@@ -7,7 +7,7 @@
         <i class="fab fa-twitter text-3xl text-primary xl:ml-4 mb-3"></i>
         <!-- sidemenu icons -->
         <div class="flex flex-col items-start space-y-1">
-          <router-link :to="route.path" class="hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer" v-for="route in routes" :key="route">
+          <router-link :to="route.path" :class="`hover:text-primary hover:bg-blue-50 px-4 py-2 rounded-full cursor-pointer ${router.currentRoute.value.name == route.name ? 'text-primary' : ''}`" v-for="route in routes" :key="route">
             <div v-if="route.meta.isMenu">
               <i :class="route.icon"></i>
               <span class="ml-5 text-xl hidden xl:inline-block">{{ route.title }}</span>
@@ -25,15 +25,15 @@
       <!-- profile button -->
       <div class="xl:pr-3 mb-3 relative" @click="showProfileDropdown = true">
         <button class="hidden xl:flex mt-3 px-2 py-1 w-full h-12 rounded-full hover:bg-blue-50 items-center">
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full" />
+          <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full" />
           <div class="xl:ml-2 hidden xl:block">
-            <div class="text-sm font-bold">jinsyu.com</div>
-            <div class="text-xs text-gray-500 text-left">@jinsyu</div>
+            <div class="text-sm font-bold">{{ currentUser.email }}</div>
+            <div class="text-xs text-gray-500 text-left">@{{ currentUser.username }}</div>
           </div>
           <i class="ml-auto fas fa-ellipsis-h fa-fw text-xs hidden xl:block"></i>
         </button>
         <div class="xl:hidden flex justify-center">
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80" />
+          <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full cursor-pointer hover:opacity-80" />
         </div>
       </div>
     </div>
@@ -44,20 +44,20 @@
     <!-- profile dropdown menu -->
     <div class="absolute bottom-20 left-12 shadow rounded-lg w-60 bg-white" v-if="showProfileDropdown" @click="showProfileDropdown = false">
       <button class="hover:bg-gray-50 border-b border-gray-100 flex p-3 w-full items-center">
-        <img src="http://picsum.photos/200" class="w-10 h-10 rounded-full" />
+        <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full" />
         <div class="ml-2">
-          <div class="font-bold text-sm">jinsyu@nate.com</div>
-          <div class="text-left text-gray-500 text-sm">@jinsyu</div>
+          <div class="font-bold text-sm">{{ currentUser.email }}</div>
+          <div class="text-left text-gray-500 text-sm">@{{ currentUser.username }}</div>
         </div>
         <i class="fas fa-check text-primary ml-auto"></i>
       </button>
-      <button class="p-3 hover:bg-gray-50 w-full text-left text-sm" @click="onLogout">@jinsyu 계정에서 로그아웃</button>
+      <button class="p-3 hover:bg-gray-50 w-full text-left text-sm" @click="onLogout">@{{ currentUser.username }} 계정에서 로그아웃</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, computed } from 'vue'
 import router from '../router'
 import { auth } from '../firebase'
 import store from '../store'
@@ -66,6 +66,8 @@ export default {
   setup() {
     const routes = ref([])
     const showProfileDropdown = ref(false)
+
+    const currentUser = computed(() => store.state.user)
 
     const onLogout = async () => {
       await auth.signOut()
@@ -77,7 +79,7 @@ export default {
       routes.value = router.options.routes
     })
 
-    return { routes, showProfileDropdown, onLogout }
+    return { routes, showProfileDropdown, onLogout, currentUser, router }
   },
 }
 </script>
