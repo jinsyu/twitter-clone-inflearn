@@ -4,8 +4,8 @@
     <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
     <div class="ml-3 flex-1 flex flex-col space-y-1">
       <div class="text-sm space-x-1">
-        <span class="font-bold">{{ tweet.uid }}</span>
-        <span class="text-gray-500 text-xs">@</span>
+        <span class="font-bold">{{ tweet.email }}</span>
+        <span class="text-gray-500 text-xs">@{{ tweet.username }}</span>
         <span>·</span>
         <span class="text-gray-500 text-xs">{{ moment(tweet.created_at).fromNow() }}</span>
       </div>
