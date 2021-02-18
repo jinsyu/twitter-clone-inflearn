@@ -18,25 +18,25 @@
           <!-- original tweet -->
           <div class="flex px-4 pt-4 pb-3">
             <div class="flex flex-col">
-              <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
+              <img :src="tweet.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
               <div class="ml-5 w-0.5 h-full bg-gray-300 mt-2 -mb-1"></div>
             </div>
             <div class="ml-2 flex-1">
               <div class="flex space-x-2">
-                <span class="font-bold text-sm">Bernie Sanders</span>
-                <span class="text-gray text-sm">@BernieSanders</span>
-                <span class="text-gray text-sm">1시간</span>
+                <span class="font-bold text-sm">{{ tweet.email }}</span>
+                <span class="text-gray text-sm">@{{ tweet.username }}</span>
+                <span class="text-gray text-sm">{{ moment(tweet.created_at).fromNow() }}</span>
               </div>
-              <div class="text-sm">When the gap between the very rich & everyone else is widening; when the 50 richest Americans own more wealth than the bottom half of our country; when the effective tax rate of billionaires is less than that of average workers; YES. We must address income & wealth inequality.</div>
+              <div class="text-sm">{{ tweet.tweet_body }}</div>
               <div>
-                <span class="text-primary text-sm">@JoeBiden </span>
+                <span class="text-primary text-sm">@{{ tweet.username }}</span>
                 <span class="text-gray text-sm"> 님에게 보내는 답글</span>
               </div>
             </div>
           </div>
           <!-- tweeting section -->
           <div class="flex px-4 pb-4">
-            <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
+            <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
             <div class="ml-2 flex-1 flex flex-col">
               <textarea v-model="tweetBody" rows="5" placeholder="내 답글을 트윗합니다" class="w-full text-lg font-bold focus:outline-none mb-3 resize-none"></textarea>
               <!-- tweet button -->
@@ -53,13 +53,19 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import moment from 'moment'
+import store from '../store'
+
 export default {
+  props: ['tweet'],
   setup() {
     const tweetBody = ref('')
-
+    const currentUser = computed(() => store.state.user)
     return {
       tweetBody,
+      moment,
+      currentUser,
     }
   },
 }
