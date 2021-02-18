@@ -2,7 +2,7 @@
   "name": "twitter-clone-vue3",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --debug",
     "build": "vite build"
   },
   "dependencies": {
