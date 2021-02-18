@@ -29,6 +29,7 @@ import Tweet from '../components/Tweet.vue'
 import { ref, computed, onBeforeMount } from 'vue'
 import store from '../store'
 import { TWEET_COLEECTION, USER_COLEECTION } from '../firebase'
+import addTweet from '../utils/addTweet'
 export default {
   components: { Trends, Tweet },
   setup() {
@@ -63,16 +64,7 @@ export default {
 
     const onAddTweet = async () => {
       try {
-        const doc = TWEET_COLEECTION.doc()
-        await doc.set({
-          id: doc.id,
-          tweet_body: tweetBody.value,
-          uid: currentUser.value.uid,
-          created_at: Date.now(),
-          num_comments: 0,
-          num_retweets: 0,
-          num_likes: 0,
-        })
+        await addTweet(tweetBody.value, currentUser.value)
         tweetBody.value = ''
       } catch (e) {
         console.log('on add tweet error on homepage:', e)

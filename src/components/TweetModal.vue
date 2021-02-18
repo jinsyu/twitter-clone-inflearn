@@ -33,13 +33,26 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import addTweet from '../utils/addTweet'
+import store from '../store'
 export default {
-  setup() {
+  setup(props, { emit }) {
     const tweetBody = ref('')
+    const currentUser = computed(() => store.state.user)
+    const onAddTweet = async () => {
+      try {
+        await addTweet(tweetBody.value, currentUser.value)
+        tweetBody.value = ''
+        emit('close-modal')
+      } catch (e) {
+        console.log('on add tweet error on homepage:', e)
+      }
+    }
 
     return {
       tweetBody,
+      onAddTweet,
     }
   },
 }
