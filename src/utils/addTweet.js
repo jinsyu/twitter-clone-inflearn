@@ -6,7 +6,6 @@ export default (tweetBody, currentUser) => {
       const doc = TWEET_COLEECTION.doc()
       await doc.set({
         id: doc.id,
-
         tweet_body: tweetBody,
         uid: currentUser.uid,
         created_at: Date.now(),
