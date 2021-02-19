@@ -17,7 +17,7 @@
         </div>
         <!-- tweeting section -->
         <div class="flex p-4">
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
+          <img :src="currentUser.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-80 cursor-pointer" />
           <div class="ml-2 flex-1 flex flex-col">
             <textarea v-model="tweetBody" rows="5" placeholder="무슨 일이 일어나고 있나요?" class="w-full text-lg font-bold focus:outline-none mb-3 resize-none"></textarea>
             <!-- tweet button -->
@@ -53,6 +53,7 @@ export default {
     return {
       tweetBody,
       onAddTweet,
+      currentUser,
     }
   },
 }
