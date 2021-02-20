@@ -19,12 +19,20 @@
           <span class="ml-1 text-sm">{{ tweet.num_comments }}</span>
         </div>
         <!-- retweet button -->
-        <div class="text-gray-500 hover:text-green-500" @click="handleRetweet(tweet)">
+        <div v-if="!tweet.isRetweeted" class="text-gray-500 hover:text-green-400" @click="handleRetweet(tweet)">
+          <i class="fas fa-retweet hover:bg-green-50 rounded-full p-2"></i>
+          <span class="ml-1 text-sm">{{ tweet.num_retweets }}</span>
+        </div>
+        <div v-else class="text-green-400" @click="handleRetweet(tweet)">
           <i class="fas fa-retweet hover:bg-green-50 rounded-full p-2"></i>
           <span class="ml-1 text-sm">{{ tweet.num_retweets }}</span>
         </div>
         <!-- like button -->
-        <div class="text-gray-500 hover:text-red-500">
+        <div v-if="!tweet.isLiked" class="text-gray-400 hover:text-red-400" @click="handleLikes(tweet)">
+          <i class="far fa-heart hover:bg-red-50 rounded-full p-2"></i>
+          <span class="ml-1 text-sm">{{ tweet.num_likes }}</span>
+        </div>
+        <div v-else class="text-red-400" @click="handleLikes(tweet)">
           <i class="far fa-heart hover:bg-red-50 rounded-full p-2"></i>
           <span class="ml-1 text-sm">{{ tweet.num_likes }}</span>
         </div>
@@ -43,6 +51,7 @@ import moment from 'moment'
 import { ref } from 'vue'
 import CommentModal from './CommentModal.vue'
 import handleRetweet from '../utils/handleRetweet'
+import handleLikes from '../utils/handleLikes'
 
 export default {
   components: { CommentModal },
@@ -52,6 +61,7 @@ export default {
     return {
       moment,
       showCommentModal,
+      handleLikes,
       handleRetweet,
     }
   },

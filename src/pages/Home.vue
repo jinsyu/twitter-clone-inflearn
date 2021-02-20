@@ -43,7 +43,6 @@ export default {
       TWEET_COLEECTION.orderBy('created_at', 'desc').onSnapshot((snapshot) => {
         snapshot.docChanges().forEach(async (change) => {
           let tweet = await getTweetInfo(change.doc.data(), currentUser.value)
-          console.log(tweet)
 
           if (change.type === 'added') {
             tweets.value.splice(change.newIndex, 0, tweet)
