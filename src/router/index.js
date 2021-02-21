@@ -16,6 +16,7 @@ const routes = [
   { path: '/', name: 'bookmarks', component: Home, title: '북마크', icon: 'far fa-bookmark fa-fw text-2xl', meta: { isMenu: true, layout: 'DefaultLayout', requireAuth: true } },
   { path: '/', name: 'list', component: Home, title: '리스트', icon: 'far fa-list-alt fa-fw text-2xl', meta: { isMenu: true, layout: 'DefaultLayout', requireAuth: true } },
   { path: '/profile', name: 'profile', component: Profile, title: '프로필', icon: 'far fa-user fa-fw text-2xl', meta: { isMenu: true, layout: 'DefaultLayout', requireAuth: true } },
+  { path: '/profile/:uid', component: Profile, meta: { isMenu: false, layout: 'DefaultLayout', requireAuth: true } },
   { path: '/', name: 'more', component: Home, title: '더보기', icon: 'fas fa-ellipsis-h fa-fw text-2xl', meta: { isMenu: true, layout: 'DefaultLayout', requireAuth: true } },
   { path: '/tweet/:id', name: 'tweet', component: Tweet, meta: { isMenu: false, layout: 'DefaultLayout', requireAuth: true } },
   { path: '/register', name: 'register', component: Register, meta: { isMenu: false, layout: 'EmptyLayout' } },
