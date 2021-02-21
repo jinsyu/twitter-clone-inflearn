@@ -11,7 +11,7 @@
         </div>
         <!-- tweet -->
         <div class="px-3 py-2 flex">
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full hover:opacity-90 cursor-pointer" />
+          <img :src="tweet.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-90 cursor-pointer" />
           <div class="ml-2">
             <div class="font-bold">{{ tweet.email }}</div>
             <div class="text-gray text-sm">@{{ tweet.username }}</div>
@@ -29,35 +29,38 @@
         <div class="h-px w-full bg-gray-100"></div>
         <!-- buttons -->
         <div class="flex justify-around py-2">
-          <button>
+          <button @click="showCommentModal = true">
             <i class="far fa-comment text-gray-400 text-xl hover:bg-blue-50 hover:text-primary p-2 rounded-full h-10 w-10"></i>
           </button>
-          <button>
-            <i class="fas fa-retweet text-gray-400 text-xl hover:bg-green-50 hover:text-green-400 p-2 rounded-full h-10 w-10"></i>
+          <button @click="handleRetweet(tweet)">
+            <i v-if="tweet.isRetweeted" class="fas fa-retweet text-xl hover:bg-green-50 text-green-400 p-2 rounded-full h-10 w-10"></i>
+            <i v-else class="fas fa-retweet text-gray-400 text-xl hover:bg-green-50 hover:text-green-400 p-2 rounded-full h-10 w-10"></i>
           </button>
-          <button>
-            <i class="far fa-heart text-gray-400 text-xl hover:bg-red-50 hover:text-red-400 p-2 rounded-full h-10 w-10"></i>
+          <button @click="handleLikes(tweet)">
+            <i v-if="tweet.isLiked" class="far fa-heart text-xl hover:bg-red-50 text-red-400 p-2 rounded-full h-10 w-10"></i>
+            <i v-else class="far fa-heart text-gray-400 text-xl hover:bg-red-50 hover:text-red-400 p-2 rounded-full h-10 w-10"></i>
           </button>
         </div>
         <div class="h-px w-full bg-gray-100"></div>
         <!-- comments -->
-        <div v-for="comment in 10" :key="comment" class="flex hover:bg-gray-100 cursor-pointer px-3 py-3 border-b border-gray-100">
-          <img src="http://picsum.photos/100" class="w-10 h-10 rounded-full hover:opacity-90 cursor-pointer" />
+        <div v-for="comment in comments" :key="comment" class="flex hover:bg-gray-50 cursor-pointer px-3 py-3 border-b border-gray-100">
+          <img :src="comment.profile_image_url" class="w-10 h-10 rounded-full hover:opacity-90 cursor-pointer" />
           <div class="ml-2 flex-1">
             <div class="flex items-center space-x-2">
-              <span class="font-bold">jinsyu@nate.com</span>
-              <span class="text-gray text-sm">@jinsyu</span>
-              <span>19 days ago</span>
+              <span class="font-bold">{{ comment.email }}</span>
+              <span class="text-gray text-sm">@{{ comment.username }}</span>
+              <span>{{ moment(comment.created_at).fromNow() }}</span>
             </div>
-            <div>댓글</div>
+            <div>{{ comment.comment_tweet_body }}</div>
           </div>
-          <button>
+          <button @click="handleDeleteComment(comment)" v-if="comment.uid === currentUser.uid">
             <i class="fas fa-trash text-red-400 hover:bg-red-50 w-10 h-10 rounded-full p-2"></i>
           </button>
         </div>
       </div>
     </div>
     <trends></trends>
+    <comment-modal :tweet="tweet" v-if="showCommentModal" @close-modal="showCommentModal = false"></comment-modal>
   </div>
 </template>
 
@@ -66,27 +69,57 @@ import Trends from '../components/Trends.vue'
 import router from '../router'
 import { onBeforeMount, ref, computed } from 'vue'
 import store from '../store'
-import { TWEET_COLEECTION } from '../firebase'
+import { COMMENT_COLLECTION, TWEET_COLEECTION } from '../firebase'
 import { useRoute } from 'vue-router'
 import getTweetInfo from '../utils/getTweetInfo'
 import moment from 'moment'
+import CommentModal from '../components/CommentModal.vue'
+import handleRetweet from '../utils/handleRetweet'
+import handleLikes from '../utils/handleLikes'
+import firebase from 'firebase'
 
 export default {
-  components: { Trends },
+  components: { Trends, CommentModal },
   setup() {
     const tweet = ref(null)
     const comments = ref([])
-    const currenUser = computed(() => store.state.user)
+    const currentUser = computed(() => store.state.user)
+    const showCommentModal = ref(false)
 
     const route = useRoute()
 
+    const handleDeleteComment = async (comment) => {
+      if (confirm('커멘트를 삭제하시겠습니까?')) {
+        // delete comment
+        await COMMENT_COLLECTION.doc(comment.id).delete()
+        // decrease tweet num comments
+        await TWEET_COLEECTION.doc(comment.from_tweet_id).update({
+          num_comments: firebase.firestore.FieldValue.increment(-1),
+        })
+      }
+    }
+
     onBeforeMount(async () => {
       await TWEET_COLEECTION.doc(route.params.id).onSnapshot(async (doc) => {
-        const t = await getTweetInfo(doc.data(), currenUser.value)
+        const t = await getTweetInfo(doc.data(), currentUser.value)
         tweet.value = t
       })
+
+      COMMENT_COLLECTION.orderBy('created_at', 'desc').onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach(async (change) => {
+          let comment = await getTweetInfo(change.doc.data(), currentUser.value)
+
+          if (change.type === 'added') {
+            comments.value.splice(change.newIndex, 0, comment)
+          } else if (change.type === 'modified') {
+            comments.value.splice(change.oldIndex, 1, comment)
+          } else if (change.type === 'removed') {
+            comments.value.splice(change.oldIndex, 1)
+          }
+        })
+      })
     })
-    return { router, tweet, comments, currenUser, moment }
+    return { router, tweet, comments, currentUser, moment, showCommentModal, handleRetweet, handleLikes, handleDeleteComment }
   },
 }
 </script>
