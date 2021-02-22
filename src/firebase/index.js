@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig)
 
 export const auth = firebase.auth()
 export const db = firebase.firestore()
-export const stroage = firebase.storage()
+export const storage = firebase.storage()
 
 export const USER_COLEECTION = db.collection('users')
 export const TWEET_COLEECTION = db.collection('tweets')
