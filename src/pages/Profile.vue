@@ -21,8 +21,19 @@
         </div>
       </div>
       <!-- profile edit button -->
-      <div class="text-right mt-2 mr-2 h-14">
-        <button v-if="currentUser.uid === profileUser.uid" @click="showProfileEditModal = true" class="border text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full">프로필 수정</button>
+      <div class="text-right mt-2 mr-2 mb-10 relative">
+        <div v-if="currentUser.uid === profileUser.uid">
+          <button @click="showProfileEditModal = true" class="border text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full">프로필 수정</button>
+        </div>
+        <div v-else>
+          <div v-if="currentUser.followings.includes(profileUser.uid)" class="" @click="onUnFollow">
+            <button class="absolute w-24 right-0 text-sm bg-primary text-white px-3 py-2 hover:opacity-0 font-bold rounded-full">팔로잉</button>
+            <button class="absolute w-24 right-0 text-sm bg-red-400 text-white px-3 py-2 opacity-0 hover:opacity-100 font-bold rounded-full">언팔로우</button>
+          </div>
+          <div v-else @click="onFollow">
+            <button class="absolute right-0 w-24 border text-sm border-primary text-primary px-3 py-2 hover:bg-blue-50 font-bold rounded-full">팔로우</button>
+          </div>
+        </div>
       </div>
       <!-- user info -->
       <div class="mx-3 mt-2">
@@ -67,7 +78,7 @@ import moment from 'moment'
 import { useRoute } from 'vue-router'
 import router from '../router'
 import ProfileEditModal from '../components/ProfileEditModal.vue'
-
+import firebase from 'firebase'
 export default {
   components: { Trends, Tweet, ProfileEditModal },
   setup() {
@@ -139,6 +150,29 @@ export default {
         })
     })
 
+    const onFollow = async () => {
+      await USER_COLEECTION.doc(currentUser.value.uid).update({
+        followings: firebase.firestore.FieldValue.arrayUnion(profileUser.value.uid),
+      })
+
+      await USER_COLEECTION.doc(profileUser.value.uid).update({
+        followers: firebase.firestore.FieldValue.arrayUnion(currentUser.value.uid),
+      })
+
+      store.commit('SET_FOLLOW', profileUser.value.uid)
+    }
+
+    const onUnFollow = async () => {
+      await USER_COLEECTION.doc(currentUser.value.uid).update({
+        followings: firebase.firestore.FieldValue.arrayRemove(profileUser.value.uid),
+      })
+
+      await USER_COLEECTION.doc(profileUser.value.uid).update({
+        followers: firebase.firestore.FieldValue.arrayRemove(currentUser.value.uid),
+      })
+      store.commit('SET_UN_FOLLOW', profileUser.value.uid)
+    }
+
     return {
       currentUser,
       profileUser,
@@ -149,6 +183,8 @@ export default {
       currentTab,
       router,
       showProfileEditModal,
+      onFollow,
+      onUnFollow,
     }
   },
 }
