@@ -59,7 +59,7 @@
 
         <!-- chat input -->
         <div class="flex items-center bg-white border-t border-gray-100 sticky">
-          <input @keyup.enter="onSendMessage" v-model="messageBody" type="text" class="m-2 py-1 px-4 rounded-full bg-gray-100 resize-none outline-none flex-1" placeholder="새 쪽지 작성하기" />
+          <input @keypress.enter="onSendMessage" v-model="messageBody" type="text" class="m-2 py-1 px-4 rounded-full bg-gray-100 resize-none outline-none flex-1" placeholder="새 쪽지 작성하기" />
           <button class="text-center" @click="onSendMessage">
             <i class="far fa-paper-plane text-primary text-lg hover:bg-blue-50 p-2 rounded-full w-10 h-10"></i>
           </button>
