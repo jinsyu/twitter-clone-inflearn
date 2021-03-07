@@ -105,19 +105,21 @@ export default {
         tweet.value = t
       })
 
-      COMMENT_COLLECTION.orderBy('created_at', 'desc').onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach(async (change) => {
-          let comment = await getTweetInfo(change.doc.data(), currentUser.value)
+      COMMENT_COLLECTION.where('from_tweet_id', '==', route.params.id)
+        .orderBy('created_at', 'desc')
+        .onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach(async (change) => {
+            let comment = await getTweetInfo(change.doc.data(), currentUser.value)
 
-          if (change.type === 'added') {
-            comments.value.splice(change.newIndex, 0, comment)
-          } else if (change.type === 'modified') {
-            comments.value.splice(change.oldIndex, 1, comment)
-          } else if (change.type === 'removed') {
-            comments.value.splice(change.oldIndex, 1)
-          }
+            if (change.type === 'added') {
+              comments.value.splice(change.newIndex, 0, comment)
+            } else if (change.type === 'modified') {
+              comments.value.splice(change.oldIndex, 1, comment)
+            } else if (change.type === 'removed') {
+              comments.value.splice(change.oldIndex, 1)
+            }
+          })
         })
-      })
     })
     return { router, tweet, comments, currentUser, moment, showCommentModal, handleRetweet, handleLikes, handleDeleteComment }
   },

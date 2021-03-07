@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen container mx-auto relative">
+  <div class="flex h-screen container mx-auto relative" v-if="currentUser">
     <!-- side section -->
     <div class="w-20 xl:w-1/4 pt-5 xl:ml-10 flex flex-col justify-between border-r border-gray-100">
       <div class="flex flex-col items-center xl:items-start">
